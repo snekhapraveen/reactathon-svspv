@@ -16,10 +16,15 @@ MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
     if (err) throw err;
     var dbo = db.db("mydb");
-    dbo.createCollection("candidates_job", function(err, res) {
+    dbo.collection("joining_details").drop(function(err, delOK) {
+        if (err) throw err;
+        if (delOK) console.log("Collection deleted");
+       db.close();
+    });
+    dbo.createCollection("joining_details", function(err, res) {
         if (err) throw err;
         console.log("Collection created!");
-        db.close();
+       db.close();
     });
 });
 
@@ -28,27 +33,18 @@ MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
     if (err) throw err;
     var dbo = db.db("mydb");
-    var myobj1 = { cid:"123", jid: "a123" };
-    var myobj2 = { cid:"231", jid: "a123" };
-    var myobj3 = { cid:"231", jid: "b123" };
-    var myobj4 = { cid:"231", jid: "c123" };
+    var myobj1 = {  jid: "b123", cid: "123", doj: "21/07/2018", venue: "RMZ location, Chennai", contact : { name: "Job Daniel", number: "8473298432"} };
+    var myobj2 = {  jid: "c123", cid: "312", doj: "01/08/2018", venue: "OTP location, Chennai", contact : { name: "Kalashree", number: "5465478214"} };
 
-    dbo.collection("candidates_job").insertOne(myobj1, function(err, res) {
+    dbo.collection("joining_details").insertOne(myobj1, function(err, res) {
         if (err) throw err;
         console.log("1 document inserted");
     });
-    dbo.collection("candidates_job").insertOne(myobj2, function(err, res) {
+    dbo.collection("joining_details").insertOne(myobj2, function(err, res) {
         if (err) throw err;
         console.log("1 document inserted");
     });
-    dbo.collection("candidates_job").insertOne(myobj3, function(err, res) {
-        if (err) throw err;
-        console.log("1 document inserted");
-    });
-    dbo.collection("candidates_job").insertOne(myobj4, function(err, res) {
-        if (err) throw err;
-        console.log("1 document inserted");
-    });
+
     db.close();
 });
 
@@ -58,7 +54,7 @@ MongoClient.connect(url,{ useNewUrlParser: true }, function(err, db) {
 MongoClient.connect(url, { useNewUrlParser: true },function(err, db) {
     if (err) throw err;
     var dbo = db.db("mydb");
-    dbo.collection("candidates_job").drop(function(err, delOK) {
+    dbo.collection("candidates").drop(function(err, delOK) {
         if (err) throw err;
         if (delOK) console.log("Collection deleted");
         db.close();
